@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 const Home = (props) => {
   return (
     <div>
-      <h1>Home</h1>
+      <h1>Home 2</h1>
       <p>Welcome Home!</p>
       <button onClick={() => props.changePage()}>Go to about page</button>
     </div>

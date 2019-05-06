@@ -4,45 +4,32 @@ import thunk from 'redux-thunk';
 import { createBrowserHistory } from 'history';
 import rootReducer from '../modules';
 
-export const history = createBrowserHistory();
+export const history =  createBrowserHistory();
 
 const initialState = {};
 const enhancers = [];
 const middleware = [
-    thunk,
-    routerMiddleware(history)
+  thunk,
+  routerMiddleware(history)
 ];
 
 if(process.env.NODE_ENV === 'development'){
-    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
-    if(typeof devToolsExtension === 'function') {
-        enhancers.push(devToolsExtension());
-    }
+  if(typeof devToolsExtension === 'function'){
+    enhancers.push(devToolsExtension());
+  }
 }
 
 const composeEnhancers = compose(
-    applyMiddleware(...middleware),
-    ...enhancers
+  applyMiddleware(...middleware),
+  ...enhancers
 );
 
-const configureStore = () => {
+const store = createStore(
+  connectRouter(history)(rootReducer(history)),
+  initialState,
+  composeEnhancers
+);
 
-    const store = createStore(
-        connectRouter(history)(rootReducer(history)),
-        initialState,
-        composeEnhancers
-    );
-
-    if(process.env.NODE_ENV !== 'production'){
-        if(module.hot){
-            module.hot.accept('../modules', () => {
-                store.replaceReducer(rootReducer);
-            });
-        }
-    }
-
-}
-
-
-export default configureStore;
+export default store;
