@@ -8,27 +8,23 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import InfoIcon from '@material-ui/icons/Info';
 import PeopleIcon from '@material-ui/icons/People';
 import NewIcon from '@material-ui/icons/Public';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentIcon from '@material-ui/icons/AccountBalance';
 import { Link } from 'react-router-dom'
 
 export const mainListItems = (
   <div>
-    <Link to="/" style={{ textDecoration: 'none' }}>
-      <ListItem button>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItem>
-    </Link>
-    <Link to="/About" style={{ textDecoration: 'none' }}>
-      <ListItem button>
-        <ListItemIcon>
-          <InfoIcon />
-        </ListItemIcon>
-        <ListItemText primary="Acerca de" />
-      </ListItem>
-    </Link>
+    <ListItem button component={Link} to="/" >
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
+    <ListItem button component={Link} to="/About" >
+      <ListItemIcon>
+        <InfoIcon />
+      </ListItemIcon>
+      <ListItemText primary="Acerca de" />
+    </ListItem>
     <ListItem button>
       <ListItemIcon>
         <NewIcon />
@@ -46,24 +42,12 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
+    <ListSubheader inset>Recursos</ListSubheader>
+    <ListItem button component="a" target="_blank" href="https://www.bancoagrario.gov.co/SAC/Paginas/MasFamiliasAccion.aspx">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Banco" />
     </ListItem>
   </div>
 );

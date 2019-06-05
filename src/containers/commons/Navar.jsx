@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { 
   Toolbar, AppBar, IconButton, 
-  Typography, MenuItem, Menu, Drawer, List, Divider, 
+  Typography, MenuItem, Menu, Drawer, List, Divider
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import {  AccountCircle, ChevronLeft } from '@material-ui/icons'
@@ -77,13 +77,16 @@ const styles = (theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
     height: '100vh',
-    overflow: 'auto',
-    marginTop: '55px'
+    overflow: 'auto'
   },
-  
+  appBarSpacer: theme.mixins.toolbar,
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: '10px'
+  },
 });
+
 
 class Navbar extends Component {
 
@@ -108,8 +111,7 @@ class Navbar extends Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-  
-  
+    
   render(){
     const { state: { anchorEl, open }, props: { classes, children } } = this;
     const isMenuOpen = Boolean(anchorEl);
@@ -127,25 +129,23 @@ class Navbar extends Component {
     );
 
     const renderDrawer = (
-      <div className={classes.root}>
-        <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
-            }}
-            open={open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeft />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
-          </Drawer>          
-        </div>
+      <Drawer
+          variant="permanent"
+          classes={{
+            paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeft />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>{mainListItems}</List>
+          <Divider />
+          <List>{secondaryListItems}</List>
+        </Drawer>
       );
       return (
         <div className={classes.root}>
@@ -179,7 +179,14 @@ class Navbar extends Component {
           { renderMenu }
           { renderDrawer }
           <main className={classes.content}>
-            { children }
+            <div className={classes.appBarSpacer} />
+              { children }
+              {/* Footer */}
+              <footer className={classes.footer}>
+                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+                  Creado por Katty y Carolina Vega.
+                </Typography>
+              </footer>            
           </main>
         </div>
     );

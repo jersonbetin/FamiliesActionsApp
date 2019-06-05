@@ -9,7 +9,7 @@ import Navbar from './commons/Navar';
 
 const styles = theme => ({
   root: {
-    display:'flex'
+    display:'block'
   }
 });
 
@@ -19,12 +19,10 @@ class App extends Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <header>
-          <Navbar>
-            <Route exact path="/" component={Home}/>
-            <Route exact path="/about" component={About}/>
-          </Navbar>
-        </header>
+        <Navbar>
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/about" component={About}/>
+        </Navbar>
       </div>
     );
   }
