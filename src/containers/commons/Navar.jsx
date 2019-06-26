@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { 
   Toolbar, AppBar, IconButton, 
-  Typography, MenuItem, Menu, Drawer, List, Divider
+  Typography, Menu, Drawer, List, Divider, MenuItem
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import {  AccountCircle, ChevronLeft } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
 import { mainListItems, secondaryListItems } from './ListItems';
+import SignIn from './Signin';
 
 const drawerWidth = 240;
 
@@ -96,6 +97,7 @@ class Navbar extends Component {
   };
 
   handleProfileMenuOpen = event => {
+    console.log(event.currentTarget);
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -122,9 +124,8 @@ class Navbar extends Component {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+      >        
+        <SignIn/>
       </Menu>
     );
 
