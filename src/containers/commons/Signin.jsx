@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, FormControlLabel, Checkbox } from '@material-ui/core';
 //import { spacing } from '@material-ui/system';
 import TextField from './TextField';
 import Button from './Button';
+import classnames from 'classnames';
 
 const styles = theme => ({
   paper: {
@@ -16,7 +17,6 @@ const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: '8px',
-    alignItems: 'center',
   },
   avatar: {
     margin: '8px',
@@ -30,9 +30,9 @@ const styles = theme => ({
   }
 });
 
-const SignIn = ({classes}) => {
+const SignIn = ({id, password, isAdmin, onchange, onSubmit, classes}) => {
   return (
-    <form className={classes.form} noValidate className={classes.root}>
+    <form className = {classnames(classes.root)}  noValidate >
       <Grid container spacing={8} direction="column" justify="center">
         <Grid item lg={12} md={12} xs={12}>
           <TextField
@@ -41,12 +41,14 @@ const SignIn = ({classes}) => {
             required
             className={classes.inputs}
             //fullWidth
-            id="email"
-            type="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="identification"
+            type="text"
+            label="Identificacion"
+            name="id"
+            autoComplete="Identificacion"
+            value={id}
             autoFocus
+            onChange={onchange}
           />
         </Grid>
         <Grid item lg={12} md={12} xs={12}>
@@ -59,7 +61,23 @@ const SignIn = ({classes}) => {
             label="Password"
             type="password"
             id="password"
+            value={password}
             autoComplete="current-password"
+            onChange={onchange}
+          />
+        </Grid>
+        <Grid item lg={12} md={12} xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox 
+                value={isAdmin === 'false' ? 'true' : 'false'} 
+                color="primary" 
+                name="isAdmin"
+                onChange={onchange} 
+                //checked={isAdmin}
+                />
+              }
+            label="Administrador"
           />
         </Grid>
         <Grid item lg={12} md={12} xs={12}>
@@ -69,6 +87,7 @@ const SignIn = ({classes}) => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onSubmit}
           >
             Entrar
           </Button>
@@ -80,6 +99,11 @@ const SignIn = ({classes}) => {
 
 SignIn.propTypes = {
   classes: PropTypes.object,
+  id: PropTypes.string,
+  password: PropTypes.string,
+  isAdmin:PropTypes.string,
+  onchange: PropTypes.func,
+  onSubmit: PropTypes.func,
 }
 
 export default withStyles(styles)(SignIn);

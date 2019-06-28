@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { 
   Toolbar, AppBar, IconButton, 
-  Typography, Menu, Drawer, List, Divider, MenuItem
+  Typography, Menu, Drawer, List, Divider
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import {  AccountCircle, ChevronLeft } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
 import { mainListItems, secondaryListItems } from './ListItems';
 import SignIn from './Signin';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../../actions/sessions';
+import { handleObjects } from '../../helpers';
 
 const drawerWidth = 240;
 
@@ -90,11 +95,24 @@ const styles = (theme) => ({
 
 
 class Navbar extends Component {
+  /*constructor(props){
+    super(props);
+  }*/
 
   state = {
     anchorEl: null,
-    open: true
+    open: true,
+    dataSession: {
+      id: '',
+      password: ''
+    },
+    session: this.props.session
   };
+
+  componentWillReceiveProps(props){
+    console.log('props recive', props);
+    this.setState({...props, anchorEl: null });
+  }
 
   handleProfileMenuOpen = event => {
     console.log(event.currentTarget);
@@ -113,9 +131,52 @@ class Navbar extends Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+
+  onHandleChange = (event) => {
+    const field = event.target.name
+    let dataSession = this.state.dataSession
+    dataSession[field] = event.target.value
+    this.setState({dataSession})
+  }
+
+  onHandleSubmit = (e) => {
+    e.preventDefault();
+    const { props : { fetchSession, fetchSessionSuccess }, state: { dataSession } } = this;
+    
+    fetchSession(dataSession).payload
+      .then(result => {
+        const { data : { data } } = result;
+        console.log(data);
+        fetchSessionSuccess(data);
+      })
+      .catch(e => {
+        console.log(e);
+      })
+  }
     
   render(){
-    const { state: { anchorEl, open }, props: { classes, children } } = this;
+    const { state: { 
+        anchorEl, 
+        open, 
+        dataSession : { 
+          id, 
+          password, 
+          isAdmin 
+        }, 
+        session : { 
+          data,
+          login,
+        } 
+      }, 
+      props: { 
+        classes, 
+        children 
+      } 
+    } = this;
+    let name = {};
+    if(data !== null && !handleObjects.isEmpty(data)){
+      name = data.name;
+    }
     const isMenuOpen = Boolean(anchorEl);
     const renderMenu = (
       <Menu
@@ -125,7 +186,13 @@ class Navbar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >        
-        <SignIn/>
+        <SignIn 
+          id = {id} 
+          password = {password} 
+          isAdmin = {isAdmin} 
+          onchange = {this.onHandleChange}
+          onSubmit = {this.onHandleSubmit}
+          />
       </Menu>
     );
 
@@ -171,9 +238,13 @@ class Navbar extends Component {
                 FAMILIAS EN ACCION
               </Typography>
               <span className={classes.toolbarButtons}>
-                <IconButton color="inherit" onClick={this.handleProfileMenuOpen}>
-                  <AccountCircle />
-                </IconButton>
+                { !login &&
+                  <IconButton color="inherit" onClick={this.handleProfileMenuOpen}>
+                    <AccountCircle />
+                  </IconButton>
+                }{
+                  login && <span> { `${name.first} ${name.last}` }</span>
+                }
               </span>
             </Toolbar>
           </AppBar>
@@ -198,5 +269,18 @@ Navbar.propsTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.object,
 }
+const  mapStateToProps = (state, ownProps) => {
+  return {
+    session: state.session.session
+  }
+}
 
-export default withStyles(styles)(Navbar);
+const mapDispatchToProps = dispatch =>  bindActionCreators(sessionActions , dispatch)
+
+//export default withStyles(styles)(Navbar);
+export default compose(
+  withStyles(styles, {
+      name: 'Navbar',
+  }),
+  connect(mapStateToProps, mapDispatchToProps),
+)(Navbar);

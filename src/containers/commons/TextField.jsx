@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 
 const TextFields = ({ 
-  id, label, autoFocus, type, name,
-  variant, margin, required, fullWidth , classname
+  id, label, autoFocus, type, name, value,
+  variant, margin, required, fullWidth , classname, onChange
 }) => (
   <TextField
       variant={variant}
@@ -16,6 +16,8 @@ const TextFields = ({
       label={label}
       name={name}
       type={type}
+      value={value}
+      onChange={onChange}
       //autoComplet={autoComplete}
       autoFocus={autoFocus}
     />
@@ -32,6 +34,8 @@ TextFields.propTypes = {
   required: PropTypes.bool,
   fullWidth: PropTypes.bool,
   classname: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 }
 
 TextFields.defaultProps = {
