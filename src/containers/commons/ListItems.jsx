@@ -11,7 +11,7 @@ import NewIcon from '@material-ui/icons/Public';
 import AssignmentIcon from '@material-ui/icons/AccountBalance';
 import { Link } from 'react-router-dom'
 
-export const mainListItems = (
+export const MainListItems = ({isLog}) => (
   <div>
     <ListItem button component={Link} to="/" >
       <ListItemIcon>
@@ -25,6 +25,37 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Acerca de" />
     </ListItem>
+    {
+      isLog && (
+        <ListItem button component={Link} to="/private" >
+          <ListItemIcon>
+            <InfoIcon />
+          </ListItemIcon>
+          <ListItemText primary="Privado" />
+        </ListItem>
+      )
+    }
+    {
+      isLog && (
+      <ListItem button component={Link} to="/private2" >
+        <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon>
+        <ListItemText primary="Privado2" />
+      </ListItem>
+      )
+    }
+    {
+      isLog && (
+      <ListItem button component={Link} to="/private3" >
+        <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon>
+        <ListItemText primary="Privado3" />
+      </ListItem>
+      )
+    }
+
     <ListItem button>
       <ListItemIcon>
         <NewIcon />

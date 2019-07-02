@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 //import { spacing } from '@material-ui/system';
 import TextField from './TextField';
 import Button from './Button';
@@ -27,10 +27,13 @@ const styles = theme => ({
   },
   root: {
     margin: '20px'
+  },
+  error: {
+    color: 'red'
   }
 });
 
-const SignIn = ({id, password, isAdmin, onchange, onSubmit, classes}) => {
+const SignIn = ({id, password, error, onchange, onSubmit, classes}) => {
   return (
     <form className = {classnames(classes.root)}  noValidate >
       <Grid container spacing={8} direction="column" justify="center">
@@ -67,18 +70,11 @@ const SignIn = ({id, password, isAdmin, onchange, onSubmit, classes}) => {
           />
         </Grid>
         <Grid item lg={12} md={12} xs={12}>
-          <FormControlLabel
-            control={
-              <Checkbox 
-                value={isAdmin === 'false' ? 'true' : 'false'} 
-                color="primary" 
-                name="isAdmin"
-                onChange={onchange} 
-                //checked={isAdmin}
-                />
-              }
-            label="Administrador"
-          />
+        <Typography variant="subtitle2" className={classes.error} gutterBottom>
+          { error &&
+            `${error}`
+          }
+        </Typography>
         </Grid>
         <Grid item lg={12} md={12} xs={12}>
           <Button
@@ -101,7 +97,7 @@ SignIn.propTypes = {
   classes: PropTypes.object,
   id: PropTypes.string,
   password: PropTypes.string,
-  isAdmin:PropTypes.string,
+  error:PropTypes.string,
   onchange: PropTypes.func,
   onSubmit: PropTypes.func,
 }

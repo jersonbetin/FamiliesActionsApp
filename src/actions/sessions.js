@@ -31,3 +31,9 @@ export const fetchSessionFailure = (error) => {
     payload: error
   };
 }
+
+export const fetchCloseSession = () => {
+  return {
+    type: types.FETCH_CLOSE_SESSION
+  };
+}

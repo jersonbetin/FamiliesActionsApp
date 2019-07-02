@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
 import { 
   Toolbar, AppBar, IconButton, 
@@ -8,13 +11,13 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import {  AccountCircle, ChevronLeft } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
-import { mainListItems, secondaryListItems } from './ListItems';
+import { MainListItems, secondaryListItems } from './ListItems';
 import SignIn from './Signin';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import ManagerSession from './ManagerSession';
 import * as sessionActions from '../../actions/sessions';
 import { handleObjects } from '../../helpers';
+import Snackbar from '@material-ui/core/Snackbar';
+import MySnackbarContentWrapper from './MySnackbarContentWrapper';
 
 const drawerWidth = 240;
 
@@ -104,9 +107,15 @@ class Navbar extends Component {
     open: true,
     dataSession: {
       id: '',
-      password: ''
+      password: '',
+      error: null
     },
-    session: this.props.session
+    session: this.props.session,
+    snack: {
+      openSnack: false,
+      message:'',
+      type: 'success'
+    }
   };
 
   componentWillReceiveProps(props){
@@ -132,6 +141,14 @@ class Navbar extends Component {
     this.setState({ open: false });
   };
 
+  handleSnakClose = () => {
+    this.setState({ snack : { ...this.state.snack , openSnack: false } });
+  };
+
+  handleSnakOpen = (type, message) => {
+    this.setState({ snack : { openSnack: true, type, message } });
+  };
+
   onHandleChange = (event) => {
     const field = event.target.name
     let dataSession = this.state.dataSession
@@ -141,32 +158,55 @@ class Navbar extends Component {
 
   onHandleSubmit = (e) => {
     e.preventDefault();
-    const { props : { fetchSession, fetchSessionSuccess }, state: { dataSession } } = this;
+    const { props : { fetchSession, fetchSessionSuccess, fetchSessionFailure }, state: { dataSession } } = this;
     
     fetchSession(dataSession).payload
       .then(result => {
         const { data : { data } } = result;
-        console.log(data);
-        fetchSessionSuccess(data);
+        const { error, message } = data
+        if(error){
+          fetchSessionFailure(data);
+          const newState = { ...this.state };
+          newState.dataSession.error = message;
+          this.setState(newState); 
+          this.handleSnakOpen('error', 'Usuario y contraseña invalidos');  
+        } else {
+          fetchSessionSuccess(data)
+          this.handleSnakOpen('success', 'Se ha logeado con exito');  
+        }
       })
       .catch(e => {
-        console.log(e);
+        this.handleSnakOpen('error', 'Error en el servidor');  
+        fetchSessionFailure()
       })
+  }
+
+  onHandleCloseSession = (e) => {
+    e.preventDefault();
+    const { props : { fetchCloseSession} } = this;
+    
+    fetchCloseSession()
   }
     
   render(){
-    const { state: { 
+    const { 
+      state: { 
         anchorEl, 
         open, 
         dataSession : { 
           id, 
-          password, 
-          isAdmin 
+          password,
+          error
         }, 
         session : { 
           data,
           login,
-        } 
+        },
+        snack: {
+          openSnack,
+          message,
+          type
+        }
       }, 
       props: { 
         classes, 
@@ -176,6 +216,11 @@ class Navbar extends Component {
     let name = {};
     if(data !== null && !handleObjects.isEmpty(data)){
       name = data.name;
+    }else {
+      name={
+        first: 'Jerson David',
+        last: 'Betin Pantoja'
+      }
     }
     const isMenuOpen = Boolean(anchorEl);
     const renderMenu = (
@@ -185,14 +230,22 @@ class Navbar extends Component {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
-      >        
+      >   
+      { !login && 
         <SignIn 
           id = {id} 
           password = {password} 
-          isAdmin = {isAdmin} 
+          error = {error} 
           onchange = {this.onHandleChange}
           onSubmit = {this.onHandleSubmit}
           />
+        }
+        { login &&
+          <ManagerSession 
+            user={name} 
+            onClick={this.onHandleCloseSession}
+          />
+        }
       </Menu>
     );
 
@@ -210,7 +263,7 @@ class Navbar extends Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List><MainListItems isLog={login}/></List>
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
@@ -238,13 +291,9 @@ class Navbar extends Component {
                 FAMILIAS EN ACCION
               </Typography>
               <span className={classes.toolbarButtons}>
-                { !login &&
                   <IconButton color="inherit" onClick={this.handleProfileMenuOpen}>
                     <AccountCircle />
                   </IconButton>
-                }{
-                  login && <span> { `${name.first} ${name.last}` }</span>
-                }
               </span>
             </Toolbar>
           </AppBar>
@@ -260,6 +309,20 @@ class Navbar extends Component {
                 </Typography>
               </footer>            
           </main>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            open={openSnack}
+            autoHideDuration={6000}
+            onClose={this.handleSnakClose}>
+            <MySnackbarContentWrapper
+              onClose={this.handleSnakClose}
+              variant={type}
+              message={message}
+            />
+          </Snackbar>
         </div>
     );
   }
@@ -268,7 +331,9 @@ class Navbar extends Component {
 Navbar.propsTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.object,
+  session: PropTypes.object,
 }
+
 const  mapStateToProps = (state, ownProps) => {
   return {
     session: state.session.session

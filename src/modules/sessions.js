@@ -23,6 +23,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         session: { data: {}, error:action.payload, loading: false, login: false  }
       };
+
+      case types.FETCH_CLOSE_SESSION:
+        return {
+          ...state,
+          session: { data: {}, error:null, loading: false, login: false }
+        };
     default: return state;
   }
 };
