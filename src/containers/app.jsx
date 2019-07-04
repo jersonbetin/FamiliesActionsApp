@@ -10,6 +10,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import RouterPrivate from './Routers/PrivateRouter';
 import Unauth from './commons/Unauth';
+import Profile from './Profile/Configure';
 
 const styles = theme => ({
   root: {
@@ -29,6 +30,7 @@ class App extends Component {
             <Route exact path="/about" component={About}/>
             <Route exact path="/unauth" component={Unauth}/>
             <RouterPrivate exact path="/private" component={About} isLog={session.login}/>
+            <RouterPrivate exact path="/profile" component={Profile} isLog={session.login}/>
           </Switch>
         </Navbar>
       </div>

@@ -9,6 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import PeopleIcon from '@material-ui/icons/People';
 import NewIcon from '@material-ui/icons/Public';
 import AssignmentIcon from '@material-ui/icons/AccountBalance';
+import { GroupAdd } from '@material-ui/icons';
 import { Link } from 'react-router-dom'
 
 export const MainListItems = ({isLog}) => (
@@ -39,9 +40,9 @@ export const MainListItems = ({isLog}) => (
       isLog && (
       <ListItem button component={Link} to="/private2" >
         <ListItemIcon>
-          <InfoIcon />
+          <GroupAdd />
         </ListItemIcon>
-        <ListItemText primary="Privado2" />
+        <ListItemText primary="Madre Lider" />
       </ListItem>
       )
     }

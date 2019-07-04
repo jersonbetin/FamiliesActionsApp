@@ -4,12 +4,13 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { 
   Toolbar, AppBar, IconButton, 
   Typography, Menu, Drawer, List, Divider
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import {  AccountCircle, ChevronLeft } from '@material-ui/icons'
+import {  AccountCircle, ChevronLeft, Settings } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
 import { MainListItems, secondaryListItems } from './ListItems';
 import SignIn from './Signin';
@@ -294,6 +295,11 @@ class Navbar extends Component {
                   <IconButton color="inherit" onClick={this.handleProfileMenuOpen}>
                     <AccountCircle />
                   </IconButton>
+                { login &&
+                  <IconButton color="inherit" component={Link} to="/profile">
+                    <Settings />
+                  </IconButton>
+                }
               </span>
             </Toolbar>
           </AppBar>
