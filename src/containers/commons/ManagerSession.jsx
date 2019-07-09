@@ -36,7 +36,7 @@ const ManagerSession = ({classes, user, onClick}) => {
         </ListItemIcon>
       </ListItem>
       <ListItem>
-        <ListItemText className={classes.userText} primary={`${first} ${last}`}/>
+        <ListItemText className={classes.userText} primary={`${first || ''} ${last ||  ''}`}/>
       </ListItem>
       <ListItem>
         <Button

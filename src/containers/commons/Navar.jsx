@@ -223,6 +223,7 @@ class Navbar extends Component {
         last: 'Betin Pantoja'
       }
     }
+    console.log(login);
     const isMenuOpen = Boolean(anchorEl);
     const renderMenu = (
       <Menu

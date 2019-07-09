@@ -4,9 +4,10 @@ import { TextField } from '@material-ui/core';
 
 const TextFields = ({ 
   id, label, autoFocus, type, name, value,
-  variant, margin, required, fullWidth , classname, onChange
+  variant, margin, required, fullWidth , classname, onChange, disabled
 }) => (
   <TextField
+      disabled = {disabled}
       variant={variant}
       margin={margin}
       required={required}
@@ -36,6 +37,7 @@ TextFields.propTypes = {
   classname: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 
 TextFields.defaultProps = {
@@ -45,7 +47,8 @@ TextFields.defaultProps = {
   variant: 'outlined',
   margin: 'normal',
   required: false,
-  fullWidth: true
+  fullWidth: true,
+  disabled: false
 }
 
 export default TextFields;

@@ -1,0 +1,13 @@
+{
+  "data":{
+    "name": {
+      "first": "Jerson David",
+      "last": "Betin Pantoja"
+    },
+    "rol": "admin",
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDE1MGM5YTBkNmJiOTIyYTlmYjQ2ODEiLCJ1c2VyIjoiMTA2OTQ4NDE0OSIsInJvbCI6ImFkbWluIiwiaWF0IjoxNTYyNDI1ODA2LCJleHAiOjE1NjMyODk4MDZ9.2uKI-MHCxjYfEsic2M2LTP52pG0R4nv1qphmOi_IC74",
+    "user":"1069484149"
+  },
+    "loading":false,
+    "login": true
+}

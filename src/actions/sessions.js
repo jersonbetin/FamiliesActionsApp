@@ -37,3 +37,10 @@ export const fetchCloseSession = () => {
     type: types.FETCH_CLOSE_SESSION
   };
 }
+
+export const UpdateNameSession = (name) => {
+  return {
+    type: types.UPDATE_NAME_SESSION,
+    payload: name
+  };
+}
