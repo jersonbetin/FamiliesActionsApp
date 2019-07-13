@@ -14,7 +14,10 @@ import Unauth from './commons/Unauth';
 import Snackbar from '@material-ui/core/Snackbar';
 import MySnackbarContentWrapper from './commons/MySnackbarContentWrapper';
 import Profile from './Profile/Configure';
+import ContactUs from './ContactUs';
 import { closeSnack } from '../actions/snackbar';
+import ManagerMotherLeader from './MotherLeader/Manager';
+import ListMotherLeader from './MotherLeader/List';
 
 const styles = theme => ({
   root: {
@@ -32,10 +35,12 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/about" component={About}/>
+            <Route exact path="/contact" component={ContactUs}/>
             <Route exact path="/unauth" component={Unauth}/>
             <RouterPrivate exact path="/private" component={About} isLog={session.login}/>
-            {/*<RouterPrivate exact path="/profile" component={Profile} isLog={session.login}/>*/}
-            <Route exact path="/profile" component={Profile}/>
+            <RouterPrivate exact path="/profile" component={Profile} isLog={session.login}/>
+            <RouterPrivate exact path="/mother-leaders/new" component={ManagerMotherLeader} isLog={session.login}/>
+            <RouterPrivate exact path="/mother-leaders/list" component={ListMotherLeader} isLog={session.login}/>
           </Switch>
         </Navbar>
 

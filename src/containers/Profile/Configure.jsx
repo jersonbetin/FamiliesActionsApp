@@ -51,8 +51,6 @@ export class Configure extends Component {
     }
   }
 
-
-
   onHandleChange = (event) => {
     const field = event.target.name
     let dataSession = this.state.dataSession
@@ -109,7 +107,7 @@ export class Configure extends Component {
         console.log(e);
         this.props.openSnack('Error al guardar configuracion', 'error');
       }
-    )
+    );
   }
 
   render() {
@@ -215,7 +213,7 @@ export class Configure extends Component {
                   fullWidth
                   id="lastname"
                   type="text"
-                  label="Nombres"
+                  label="Apellidos"
                   name="lastname"
                   autoComplete="Apellidos"
                   value={lastname}

@@ -202,6 +202,9 @@ class Navbar extends Component {
         session : { 
           data,
           login,
+          data: {
+            rol
+          }
         },
         snack: {
           openSnack,
@@ -223,7 +226,6 @@ class Navbar extends Component {
         last: 'Betin Pantoja'
       }
     }
-    console.log(login);
     const isMenuOpen = Boolean(anchorEl);
     const renderMenu = (
       <Menu
@@ -265,7 +267,7 @@ class Navbar extends Component {
             </IconButton>
           </div>
           <Divider />
-          <List><MainListItems isLog={login}/></List>
+          <List><MainListItems isLog={login} rol= {rol}/></List>
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
