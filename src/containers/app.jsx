@@ -18,6 +18,7 @@ import ContactUs from './ContactUs';
 import { closeSnack } from '../actions/snackbar';
 import ManagerMotherLeader from './MotherLeader/Manager';
 import ListMotherLeader from './MotherLeader/List';
+import UpdateMotherLeader from './MotherLeader/Update';
 
 const styles = theme => ({
   root: {
@@ -41,6 +42,7 @@ class App extends Component {
             <RouterPrivate exact path="/profile" component={Profile} isLog={session.login}/>
             <RouterPrivate exact path="/mother-leaders/new" component={ManagerMotherLeader} isLog={session.login}/>
             <RouterPrivate exact path="/mother-leaders/list" component={ListMotherLeader} isLog={session.login}/>
+            <RouterPrivate exact path="/mother-leaders/update" component={UpdateMotherLeader} isLog={session.login}/>
           </Switch>
         </Navbar>
 
